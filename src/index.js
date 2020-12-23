@@ -62,7 +62,7 @@ mongo.connect(url, {useUnifiedTopology: true}, (error, client) => {
         } // loop a
     })
         .do(addOne)
-        .consume();
+        .run();
 
     console.log('koniec')
 })
