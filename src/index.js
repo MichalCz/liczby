@@ -4,7 +4,7 @@ const {DataStream} = require('scramjet');
 const url = 'mongodb://127.0.0.1:27017';
 const dbname = 'baza';
 
-mongo.connect(url, {useUnifiedTopology: true}, (error, client) => {
+mongo.connect(url, {useUnifiedTopology: true}, async (error, client) => {
     if (error) {
         throw Error('cos nie tak');
     }
@@ -35,7 +35,7 @@ mongo.connect(url, {useUnifiedTopology: true}, (error, client) => {
     // count()
     // findLast();
     
-    DataStream.from(function*() {
+    await DataStream.from(function*() {
         for (let a = 1; a <= 44; ++a) {
 
             for (let b = 2; b <= 45; ++b) {
@@ -61,6 +61,7 @@ mongo.connect(url, {useUnifiedTopology: true}, (error, client) => {
             } // loop b
         } // loop a
     })
+        .setOptions({maxParallel: 64}) // how many parallel inserts
         .do(addOne)
         .run();
 
